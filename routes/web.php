@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\AyamController;
+use App\Http\Controllers\Admin\KandangController;
+use App\Http\Controllers\Admin\KesehatanAyamController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TwoFactorController;
 use Illuminate\Support\Facades\Route;
@@ -11,6 +14,18 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified','2fa'])->name('dashboard');
+
+Route::middleware(['auth', 'verified', '2fa'])->prefix('admin')->name('admin.')->group(function () {
+    // Dashboard
+    Route::get('/dashboard', function () {
+        return view('layouts.admin.dashboard');
+    })->name('dashboard');
+    
+    // Resource Controllers
+    Route::resource('kandang', KandangController::class);
+    Route::resource('ayam', AyamController::class);
+    Route::resource('kesehatan', KesehatanAyamController::class);
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
