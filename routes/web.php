@@ -3,6 +3,9 @@
 use App\Http\Controllers\Admin\AyamController;
 use App\Http\Controllers\Admin\KandangController;
 use App\Http\Controllers\Admin\KesehatanAyamController;
+use App\Http\Controllers\Admin\KonsumsiPakanController;
+use App\Http\Controllers\Admin\PakanController;
+use App\Http\Controllers\Admin\ProduksiTelurController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TwoFactorController;
 use Illuminate\Support\Facades\Route;
@@ -18,13 +21,16 @@ Route::get('/dashboard', function () {
 Route::middleware(['auth', 'verified', '2fa'])->prefix('admin')->name('admin.')->group(function () {
     // Dashboard
     Route::get('/dashboard', function () {
-        return view('layouts.admin.dashboard');
+        return view('admin.dashboard');
     })->name('dashboard');
     
     // Resource Controllers
     Route::resource('kandang', KandangController::class);
     Route::resource('ayam', AyamController::class);
     Route::resource('kesehatan', KesehatanAyamController::class);
+    Route::resource('pakan', PakanController::class);
+    Route::resource('produksi', ProduksiTelurController::class);
+    Route::resource('konsumsi', KonsumsiPakanController::class);
 });
 
 Route::middleware('auth')->group(function () {

@@ -54,4 +54,9 @@ class Ayam extends Model
             default => 'Tidak Diketahui'
         };
     }
+
+    public function produksiTelurs()
+    {
+        return $this->hasMany(ProduksiTelur::class);
+    }
 }
