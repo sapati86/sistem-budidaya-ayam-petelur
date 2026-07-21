@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\DB;
 
 class KonsumsiPakanController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['auth', 'verified', '2fa']);
-        $this->middleware('role:admin')->except(['index', 'show', 'create', 'store']);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware(['auth', 'verified', '2fa']);
+    //     $this->middleware('role:admin')->except(['index', 'show', 'create', 'store']);
+    // }
 
     public function index()
     {

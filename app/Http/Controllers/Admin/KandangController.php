@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Storage;
 
 class KandangController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['auth', 'verified', '2fa']);
-        $this->middleware('role:admin')->except(['index', 'show']);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware(['auth', 'verified', '2fa']);
+    //     $this->middleware('role:admin')->except(['index', 'show']);
+    // }
 
     public function index()
     {
