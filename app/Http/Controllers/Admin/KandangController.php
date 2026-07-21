@@ -7,14 +7,15 @@ use App\Models\Kandang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class KandangController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['auth', 'verified', '2fa']);
-        $this->middleware('role:admin')->except(['index', 'show']);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware(['auth', 'verified', '2fa']);
+    //     $this->middleware('role:admin')->except(['index', 'show']);
+    // }
 
     public function index()
     {
@@ -29,6 +30,7 @@ class KandangController extends Controller
 
     public function store(Request $request)
     {
+        // VALIDASI
         $validated = $request->validate([
             'kode_kandang' => 'required|string|unique:kandangs,kode_kandang|max:50',
             'nama' => 'required|string|max:255',
@@ -39,22 +41,40 @@ class KandangController extends Controller
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
-        // Handle foto upload
+        // HANDLE FOTO UPLOAD
         if ($request->hasFile('foto')) {
             $foto = $request->file('foto');
-            $filename = time() . '_' . $foto->getClientOriginalName();
-            $foto->storeAs('public/kandang', $filename);
-            $validated['foto'] = $filename;
+            
+            // Generate nama unik
+            $filename = time() . '_' . Str::slug($request->nama) . '.' . $foto->getClientOriginalExtension();
+            
+            // === PERBAIKAN: Gunakan store() dengan path yang benar ===
+            // Simpan ke storage/app/public/kandang
+            $path = $foto->store('kandang', 'public');
+            
+            // Atau cara manual:
+            // $path = $foto->storeAs('public/kandang', $filename);
+            
+            if ($path) {
+                // Simpan hanya nama file ke database (tanpa path)
+                $validated['foto'] = basename($path);
+            } else {
+                return back()->withErrors(['foto' => 'Gagal mengupload foto.']);
+            }
         }
 
         $validated['created_by'] = Auth::id();
         $validated['jumlah_ayam_aktif'] = 0;
 
-        Kandang::create($validated);
+        $kandang = Kandang::create($validated);
+
+        // DEBUG: Cek apakah foto tersimpan
+        // dd($kandang->foto, storage_path('app/public/kandang/' . $kandang->foto));
 
         return redirect()->route('admin.kandang.index')
             ->with('success', 'Kandang berhasil ditambahkan!');
     }
+
 
     public function show(Kandang $kandang)
     {

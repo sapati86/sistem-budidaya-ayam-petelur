@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title', 'Detail Pakan')
-@section('header', 'Detail Pakan')
+@section('header', 'Detail Data Pakan')
 
 @section('content')
 <div class="grid grid-cols-3 gap-6">
@@ -9,7 +9,7 @@
         <div class="flex items-start space-x-4">
             <div>
                 @if($pakan->foto)
-                    <img src="{{ $pakan->foto_url }}" class="w-32 h-32 object-cover rounded">
+                    <img src="{{ asset('storage/pakan/' . $pakan->foto) }}" class="w-32 h-32 object-cover rounded">
                 @else
                     <div class="w-32 h-32 bg-gray-200 rounded flex items-center justify-center text-gray-400">
                         <i class="fas fa-box text-4xl"></i>
@@ -24,7 +24,7 @@
                 <p class="text-gray-600">Stok Minimal: {{ $pakan->stok_minimal }} {{ $pakan->satuan }}</p>
                 <p class="text-gray-600">Harga: Rp {{ number_format($pakan->harga_satuan, 0, ',', '.') }}</p>
                 <p class="text-gray-600">Kadaluarsa: {{ $pakan->tanggal_kadaluarsa->format('d/m/Y') }}</p>
-                <p class="text-gray-600 mt-2">Dibuat oleh: {{ $pakan->creator->name }}</p>
+                <p class="text-gray-600 mt-2">Dibuat oleh: {{ $pakan->creator->name ?? '-' }}</p>
                 <p class="text-gray-600 text-sm">Dibuat: {{ $pakan->created_at->format('d/m/Y H:i') }}</p>
                 @if($pakan->keterangan)
                     <p class="text-gray-700 mt-2">{{ $pakan->keterangan }}</p>

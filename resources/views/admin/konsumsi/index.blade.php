@@ -30,8 +30,8 @@
                 @forelse($konsumsi as $item)
                 <tr class="border-t">
                     <td class="px-4 py-2">{{ $item->tanggal->format('d/m/Y') }}</td>
-                    <td class="px-4 py-2">{{ $item->kandang->nama }}</td>
-                    <td class="px-4 py-2">{{ $item->pakan->nama }}</td>
+                    <td class="px-4 py-2">{{ $item->kandang->nama ?? '-' }}</td>
+                    <td class="px-4 py-2">{{ $item->pakan->nama ?? '-' }}</td>
                     <td class="px-4 py-2 font-semibold">{{ number_format($item->jumlah) }} {{ $item->satuan }}</td>
                     <td class="px-4 py-2">
                         <a href="{{ route('admin.konsumsi.show', $item) }}" class="text-blue-500 hover:text-blue-700 mr-2">

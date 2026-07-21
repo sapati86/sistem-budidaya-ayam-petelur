@@ -5,6 +5,7 @@
 
 @section('content')
 <div class="bg-white rounded-lg shadow p-6">
+    {{-- PASTIKAN ADA enctype="multipart/form-data" --}}
     <form action="{{ route('admin.kandang.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         
@@ -66,6 +67,7 @@
                 <label class="block text-sm font-medium mb-1">Foto</label>
                 <input type="file" name="foto" accept="image/*" 
                        class="w-full border rounded px-3 py-2 @error('foto') border-red-500 @enderror">
+                <p class="text-xs text-gray-500 mt-1">Format: jpeg, png, jpg | Max: 2MB</p>
                 @error('foto')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror

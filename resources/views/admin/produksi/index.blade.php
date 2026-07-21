@@ -45,7 +45,7 @@
                 @forelse($produksis as $produksi)
                 <tr class="border-t">
                     <td class="px-4 py-2">{{ $produksi->tanggal->format('d/m/Y') }}</td>
-                    <td class="px-4 py-2">{{ $produksi->kandang->nama }}</td>
+                    <td class="px-4 py-2">{{ $produksi->kandang->nama ?? '-' }}</td>
                     <td class="px-4 py-2 font-semibold">{{ number_format($produksi->jumlah_produksi) }}</td>
                     <td class="px-4 py-2 text-red-500">{{ number_format($produksi->jumlah_rusak) }}</td>
                     <td class="px-4 py-2">

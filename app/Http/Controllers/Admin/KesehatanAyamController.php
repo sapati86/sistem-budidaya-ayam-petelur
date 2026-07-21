@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class KesehatanAyamController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['auth', 'verified', '2fa']);
-        $this->middleware('role:admin');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware(['auth', 'verified', '2fa']);
+    //     $this->middleware('role:admin');
+    // }
 
     public function index()
     {

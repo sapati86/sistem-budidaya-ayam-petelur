@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use Ayam;
+
+use App\Models\Ayam;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
