@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AyamController;
 use App\Http\Controllers\Admin\KandangController;
 use App\Http\Controllers\Admin\KesehatanAyamController;
 use App\Http\Controllers\Admin\KonsumsiPakanController;
+use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\PakanController;
 use App\Http\Controllers\Admin\ProduksiTelurController;
 use App\Http\Controllers\ProfileController;
@@ -24,13 +25,15 @@ Route::middleware(['auth', 'verified', '2fa'])->prefix('admin')->name('admin.')-
         return view('admin.dashboard');
     })->name('dashboard');
     
-    // Resource Controllers
     Route::resource('kandang', KandangController::class);
     Route::resource('ayam', AyamController::class);
     Route::resource('kesehatan', KesehatanAyamController::class);
     Route::resource('pakan', PakanController::class);
     Route::resource('produksi', ProduksiTelurController::class);
     Route::resource('konsumsi', KonsumsiPakanController::class);
+
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+    Route::get('/laporan/export', [LaporanController::class, 'export'])->name('laporan.export');
 });
 
 Route::middleware('auth')->group(function () {

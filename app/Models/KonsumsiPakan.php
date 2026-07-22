@@ -19,6 +19,12 @@ class KonsumsiPakan extends Model
         'created_by'
     ];
 
+    protected $casts = [
+        'tanggal' => 'date',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function kandang()
     {
         return $this->belongsTo(Kandang::class);

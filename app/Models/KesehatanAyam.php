@@ -23,6 +23,12 @@ class KesehatanAyam extends Model
         'created_by'
     ];
 
+    protected $casts = [
+        'tanggal' => 'date',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function ayam()
     {
         return $this->belongsTo(Ayam::class);

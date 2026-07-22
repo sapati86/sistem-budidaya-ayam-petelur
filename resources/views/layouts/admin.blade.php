@@ -31,6 +31,9 @@
                     <a href="{{ route('admin.kesehatan.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
                         <i class="fas fa-heartbeat mr-2"></i> Kesehatan
                     </a>
+                    <a href="{{ route('admin.laporan.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
+                        <i class="fas fa-file-alt mr-2"></i> Laporan
+                    </a>
                 </div>
                 
                 <div class="mt-8 pt-4 border-t">
