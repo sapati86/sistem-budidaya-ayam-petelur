@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\KonsumsiPakanController;
 use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\PakanController;
 use App\Http\Controllers\Admin\ProduksiTelurController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TwoFactorController;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,9 @@ Route::middleware(['auth', 'verified', '2fa'])->prefix('admin')->name('admin.')-
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->name('dashboard');
+    
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::put('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.updateRole');
     
     Route::resource('kandang', KandangController::class);
     Route::resource('ayam', AyamController::class);

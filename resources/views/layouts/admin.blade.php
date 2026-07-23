@@ -10,21 +10,17 @@
 </head>
 <body class="bg-gray-100">
     <div class="min-h-screen flex">
-
-    <div class="w-64 bg-white shadow-lg">
-        <div class="p-4 border-b">
-            <h1 class="text-xl font-bold text-blue-600">🐔 Ayam Petelur</h1>
-            <p class="text-sm text-gray-500">Sistem Informasi Manajemen</p>
-        </div>
-
-        <nav class="p-4">
-            <div class="space-y-2">
-                <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
-                    <i class="fas fa-home mr-2"></i> Dashboard
-                </a>
-
-                @role('admin')
-                    
+        <div class="w-64 bg-white shadow-lg">
+            <div class="p-4 border-b">
+                <h1 class="text-xl font-bold text-blue-600">🐔 Ayam Petelur</h1>
+                <p class="text-sm text-gray-500">Sistem Informasi Manajemen</p>
+            </div>
+            
+            <nav class="p-4">
+                <div class="space-y-2">
+                    <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
+                        <i class="fas fa-home mr-2"></i> Dashboard
+                    </a>
                     <a href="{{ route('admin.kandang.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
                         <i class="fas fa-warehouse mr-2"></i> Kandang
                     </a>
