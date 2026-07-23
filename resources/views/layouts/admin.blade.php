@@ -10,7 +10,6 @@
 </head>
 <body class="bg-gray-100">
     <div class="min-h-screen flex">
-        <!-- Sidebar -->
         <div class="w-64 bg-white shadow-lg">
             <div class="p-4 border-b">
                 <h1 class="text-xl font-bold text-blue-600">🐔 Ayam Petelur</h1>
@@ -34,6 +33,9 @@
                     <a href="{{ route('admin.laporan.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
                         <i class="fas fa-file-alt mr-2"></i> Laporan
                     </a>
+                    <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
+                        <i class="fas fa-users-cog mr-2"></i> Manajemen User
+                    </a>
                 </div>
                 
                 <div class="mt-8 pt-4 border-t">
@@ -47,9 +49,7 @@
             </nav>
         </div>
         
-        <!-- Main Content -->
         <div class="flex-1">
-            <!-- Header -->
             <header class="bg-white shadow-sm p-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-semibold">@yield('header')</h2>
@@ -62,7 +62,6 @@
                 </div>
             </header>
             
-            <!-- Content -->
             <main class="p-6">
                 @if(session('success'))
                     <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
