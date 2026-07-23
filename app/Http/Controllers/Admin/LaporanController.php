@@ -25,9 +25,6 @@ class LaporanController extends Controller
         $chartData = $this->getChartData($bulan, $tahun, $jenis);
         $summary = $this->getSummary($bulan, $tahun, $jenis);
 
-        // DEBUG: Cek data
-        // \Log::info('Chart Data:', $chartData);
-
         return view('admin.laporan.index', compact(
             'data',
             'chartData',
@@ -76,7 +73,6 @@ class LaporanController extends Controller
         $labels = [];
         $datasets = [];
 
-        // Ambil tanggal dalam bulan tersebut
         $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
 
         for ($i = 1; $i <= $daysInMonth; $i++) {

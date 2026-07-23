@@ -219,7 +219,11 @@
             </table>
         </div>
         <div class="mt-4">
-            {{ $data->links() }}
+            {{ $data->appends([
+                'jenis' => $jenis,
+                'bulan' => $bulan,
+                'tahun' => $tahun
+            ])->links() }}
         </div>
     </div>
 </div>
