@@ -4,125 +4,118 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title') - Sistem Budidaya Ayam Petelur</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>@yield('title') - Admin Panel</title>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-gray-100">
+
     <div class="min-h-screen flex">
-        <div class="w-64 bg-white shadow-lg">
+        <div class="w-64 bg-white shadow-lg flex-shrink-0">
+            {{-- Brand --}}
             <div class="p-4 border-b">
                 <h1 class="text-xl font-bold text-blue-600">🐔 Ayam Petelur</h1>
-                <p class="text-sm text-gray-500">Sistem Informasi Manajemen</p>
+                <p class="text-sm text-gray-500">Admin Panel</p>
             </div>
-            
+
             <nav class="p-4">
-                <div class="space-y-2">
-                    <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
+                <div class="space-y-1">
+
+                    <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 rounded hover:bg-blue-50 {{ request()->routeIs('admin.dashboard') ? 'bg-blue-50 text-blue-600' : '' }}">
                         <i class="fas fa-home mr-2"></i> Dashboard
                     </a>
-                    <a href="{{ route('admin.kandang.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
+
+                    <a href="{{ route('admin.kandang.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50 {{ request()->routeIs('admin.kandang.*') ? 'bg-blue-50 text-blue-600' : '' }}">
                         <i class="fas fa-warehouse mr-2"></i> Kandang
                     </a>
 
-                    <a href="{{ route('admin.ayam.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
+                    <a href="{{ route('admin.ayam.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50 {{ request()->routeIs('admin.ayam.*') ? 'bg-blue-50 text-blue-600' : '' }}">
                         <i class="fas fa-dove mr-2"></i> Ayam
                     </a>
 
-                    <a href="{{ route('admin.produksi.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
+                    <a href="{{ route('admin.produksi.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50 {{ request()->routeIs('admin.produksi.*') ? 'bg-blue-50 text-blue-600' : '' }}">
                         <i class="fas fa-egg mr-2"></i> Produksi
                     </a>
 
-                    <a href="{{ route('admin.pakan.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
+                    <a href="{{ route('admin.pakan.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50 {{ request()->routeIs('admin.pakan.*') ? 'bg-blue-50 text-blue-600' : '' }}">
                         <i class="fas fa-box mr-2"></i> Pakan
                     </a>
 
-                    <a href="{{ route('admin.kesehatan.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
+                    <a href="{{ route('admin.kesehatan.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50 {{ request()->routeIs('admin.kesehatan.*') ? 'bg-blue-50 text-blue-600' : '' }}">
                         <i class="fas fa-heartbeat mr-2"></i> Kesehatan
                     </a>
 
-                    <a href="{{ route('admin.konsumsi.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
+                    <a href="{{ route('admin.konsumsi.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50 {{ request()->routeIs('admin.konsumsi.*') ? 'bg-blue-50 text-blue-600' : '' }}">
                         <i class="fas fa-utensils mr-2"></i> Konsumsi
                     </a>
 
-                    <a href="{{ route('admin.laporan.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
+                    <a href="{{ route('admin.laporan.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50 {{ request()->routeIs('admin.laporan.*') ? 'bg-blue-50 text-blue-600' : '' }}">
                         <i class="fas fa-file-alt mr-2"></i> Laporan
                     </a>
 
-                    <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
+                    <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50 {{ request()->routeIs('admin.users.*') ? 'bg-blue-50 text-blue-600' : '' }}">
                         <i class="fas fa-users-cog mr-2"></i> Manajemen User
                     </a>
-                @endrole
 
-                @role('user')
-                    <a href="{{ route('admin.kandang.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
-                        <i class="fas fa-warehouse mr-2"></i> Kandang
-                    </a>
+                </div>
 
-                    <a href="{{ route('admin.ayam.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
-                        <i class="fas fa-dove mr-2"></i> Ayam
-                    </a>
+                <div class="mt-8 pt-4 border-t">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="w-full text-left px-4 py-2 rounded hover:bg-red-50 text-red-600 transition">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                        </button>
+                    </form>
+                </div>
+            </nav>
+        </div>
 
-                    <a href="{{ route('admin.produksi.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
-                        <i class="fas fa-egg mr-2"></i> Produksi
-                    </a>
-
-                    <a href="{{ route('admin.kesehatan.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
-                        <i class="fas fa-heartbeat mr-2"></i> Kesehatan
-                    </a>
-
-                    <a href="{{ route('admin.konsumsi.index') }}" class="block px-4 py-2 rounded hover:bg-blue-50">
-                        <i class="fas fa-utensils mr-2"></i> Konsumsi
-                    </a>
-                @endrole
-            </div>
-
-            <div class="mt-8 pt-4 border-t">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="w-full text-left px-4 py-2 rounded hover:bg-red-50 text-red-600">
-                        <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                    </button>
-                </form>
-            </div>
-        </nav>
-    </div>
-        
-        <div class="flex-1">
-
+        <div class="flex-1 min-w-0">
+            {{-- Header --}}
             <header class="bg-white shadow-sm p-4">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-semibold">@yield('header')</h2>
+                    <h2 class="text-xl font-semibold text-gray-800">@yield('header')</h2>
                     <div class="flex items-center space-x-4">
                         <span class="text-sm text-gray-600">{{ Auth::user()->name }}</span>
-                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded font-medium">
                             {{ ucfirst(Auth::user()->role) }}
                         </span>
                     </div>
                 </div>
             </header>
-            
-            
+
             <main class="p-6">
                 @if(session('success'))
-                    <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+                    <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded flex items-center gap-2">
+                        <i class="fas fa-check-circle"></i>
                         {{ session('success') }}
                     </div>
                 @endif
-                
+
+                @if(session('error'))
+                    <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded flex items-center gap-2">
+                        <i class="fas fa-exclamation-circle"></i>
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                 @if($errors->any())
                     <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-                        <ul>
+                        <ul class="list-disc pl-5">
                             @foreach($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
                         </ul>
                     </div>
                 @endif
-                
+
                 @yield('content')
             </main>
         </div>
     </div>
+
+    @stack('scripts')
 </body>
 </html>
