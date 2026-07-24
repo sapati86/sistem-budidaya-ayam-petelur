@@ -23,6 +23,12 @@ class Pakan extends Model
         'created_by'
     ];
 
+    protected $casts = [
+        'tanggal_kadaluarsa' => 'date',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');

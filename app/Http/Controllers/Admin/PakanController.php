@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Kandang;
-use App\Models\ProduksiTelur;
+use App\Models\Pakan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -14,39 +13,32 @@ class PakanController extends Controller
     // public function __construct()
     // {
     //     $this->middleware(['auth', 'verified', '2fa']);
-    //     $this->middleware('role:admin')->except(['index', 'show', 'create', 'store']);
+    //     $this->middleware('role:admin')->except(['index', 'show']);
     // }
 
     public function index()
     {
-        $produksis = ProduksiTelur::with(['kandang', 'creator'])
-            ->latest()
-            ->paginate(10);
-        
-        // Statistik
-        $totalHariIni = ProduksiTelur::whereDate('tanggal', today())->sum('jumlah_produksi');
-        $totalBulanIni = ProduksiTelur::whereMonth('tanggal', now()->month)
-            ->whereYear('tanggal', now()->year)
-            ->sum('jumlah_produksi');
-        
-        return view('admin.produksi.index', compact('produksis', 'totalHariIni', 'totalBulanIni'));
+        $pakans = Pakan::with('creator')->latest()->paginate(10);
+        $stokMenipis = Pakan::all()->filter->isStokMenipis();
+        return view('admin.pakan.index', compact('pakans', 'stokMenipis'));
     }
 
     public function create()
     {
-        $kandangs = Kandang::where('status', 'aktif')->get();
-        return view('admin.produksi.create', compact('kandangs'));
+        return view('admin.pakan.create');
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'kandang_id' => 'required|exists:kandangs,id',
-            'tanggal' => 'required|date',
-            'jumlah_produksi' => 'required|integer|min:0',
-            'jumlah_rusak' => 'nullable|integer|min:0|lte:jumlah_produksi',
-            'kualitas' => 'required|in:A,B,C',
-            'berat_rata_rata' => 'nullable|numeric|min:0',
+            'kode_pakan' => 'required|string|unique:pakans,kode_pakan|max:50',
+            'nama' => 'required|string|max:255',
+            'jenis' => 'required|in:konsentrat,jagung,dedak,premix,lainnya',
+            'stok' => 'required|integer|min:0',
+            'satuan' => 'required|string|max:20',
+            'harga_satuan' => 'required|numeric|min:0',
+            'tanggal_kadaluarsa' => 'required|date|after:today',
+            'stok_minimal' => 'required|integer|min:0',
             'keterangan' => 'nullable|string',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
@@ -54,66 +46,67 @@ class PakanController extends Controller
         if ($request->hasFile('foto')) {
             $foto = $request->file('foto');
             $filename = time() . '_' . $foto->getClientOriginalName();
-            $foto->storeAs('public/produksi', $filename);
+            $foto->storeAs('public/pakan', $filename);
             $validated['foto'] = $filename;
         }
 
         $validated['created_by'] = Auth::id();
-        ProduksiTelur::create($validated);
+        Pakan::create($validated);
 
-        return redirect()->route('admin.produksi.index')
-            ->with('success', 'Data produksi telur berhasil ditambahkan!');
+        return redirect()->route('admin.pakan.index')
+            ->with('success', 'Pakan berhasil ditambahkan!');
     }
 
-    public function show(ProduksiTelur $produksi)
+    public function show(Pakan $pakan)
     {
-        $produksi->load(['kandang', 'creator']);
-        return view('admin.produksi.show', compact('produksi'));
+        $pakan->load(['creator', 'konsumsiPakans']);
+        return view('admin.pakan.show', compact('pakan'));
     }
 
-    public function edit(ProduksiTelur $produksi)
+    public function edit(Pakan $pakan)
     {
-        $kandangs = Kandang::where('status', 'aktif')->get();
-        return view('admin.produksi.edit', compact('produksi', 'kandangs'));
+        return view('admin.pakan.edit', compact('pakan'));
     }
 
-    public function update(Request $request, ProduksiTelur $produksi)
+    public function update(Request $request, Pakan $pakan)
     {
         $validated = $request->validate([
-            'kandang_id' => 'required|exists:kandangs,id',
-            'tanggal' => 'required|date',
-            'jumlah_produksi' => 'required|integer|min:0',
-            'jumlah_rusak' => 'nullable|integer|min:0|lte:jumlah_produksi',
-            'kualitas' => 'required|in:A,B,C',
-            'berat_rata_rata' => 'nullable|numeric|min:0',
+            'kode_pakan' => 'required|string|max:50|unique:pakans,kode_pakan,' . $pakan->id,
+            'nama' => 'required|string|max:255',
+            'jenis' => 'required|in:konsentrat,jagung,dedak,premix,lainnya',
+            'stok' => 'required|integer|min:0',
+            'satuan' => 'required|string|max:20',
+            'harga_satuan' => 'required|numeric|min:0',
+            'tanggal_kadaluarsa' => 'required|date|after:today',
+            'stok_minimal' => 'required|integer|min:0',
             'keterangan' => 'nullable|string',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
         if ($request->hasFile('foto')) {
-            if ($produksi->foto) {
-                Storage::delete('public/produksi/' . $produksi->foto);
+            if ($pakan->foto) {
+                Storage::delete('public/pakan/' . $pakan->foto);
             }
             $foto = $request->file('foto');
             $filename = time() . '_' . $foto->getClientOriginalName();
-            $foto->storeAs('public/produksi', $filename);
+            $foto->storeAs('public/pakan', $filename);
             $validated['foto'] = $filename;
         }
 
-        $produksi->update($validated);
+        $pakan->update($validated);
 
-        return redirect()->route('admin.produksi.index')
-            ->with('success', 'Data produksi berhasil diperbarui!');
+        return redirect()->route('admin.pakan.index')
+            ->with('success', 'Pakan berhasil diperbarui!');
     }
 
-    public function destroy(ProduksiTelur $produksi)
+    public function destroy(Pakan $pakan)
     {
-        if ($produksi->foto) {
-            Storage::delete('public/produksi/' . $produksi->foto);
+        if ($pakan->foto) {
+            Storage::delete('public/pakan/' . $pakan->foto);
         }
-        $produksi->delete();
+        $pakan->delete();
 
-        return redirect()->route('admin.produksi.index')
-            ->with('success', 'Data produksi berhasil dihapus!');
+        return redirect()->route('admin.pakan.index')
+            ->with('success', 'Pakan berhasil dihapus!');
     }
 }
